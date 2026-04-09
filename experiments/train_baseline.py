@@ -39,9 +39,9 @@ train_dataset = MPIIGaze(OUT_ROOT, train_subjects, transform=get_train_transform
 val_dataset   = MPIIGaze(OUT_ROOT, val_subjects,   transform=get_val_transform())
 test_dataset  = MPIIGaze(OUT_ROOT, test_subjects,  transform=get_val_transform())
 
-train_loader  = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True,  num_workers=2)
-val_loader    = DataLoader(val_dataset,   batch_size=BATCH_SIZE, shuffle=False, num_workers=2)
-test_loader   = DataLoader(test_dataset,  batch_size=BATCH_SIZE, shuffle=False, num_workers=2)
+train_loader  = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True,  num_workers=0)
+val_loader    = DataLoader(val_dataset,   batch_size=BATCH_SIZE, shuffle=False, num_workers=0)
+test_loader   = DataLoader(test_dataset,  batch_size=BATCH_SIZE, shuffle=False, num_workers=0)
 
 # ── Model ─────────────────────────────────────────────────────────────────────
 model     = GazeBackbone(feat_dim=FEAT_DIM).to(DEVICE)
@@ -52,12 +52,11 @@ scheduler = get_scheduler(optimizer, scheduler_type="cosine", num_epochs=NUM_EPO
 os.makedirs(os.path.dirname(SAVE_PATH), exist_ok=True)
 
 # ── Sanity check ─────────────────────────────────────────────────────────────
-sample_batch = next(iter(train_loader))
-print(f"Batch keys:   {list(sample_batch.keys())}")
-print(f"Image shape:  {sample_batch['image'].shape}")
-print(f"Label shape:  {sample_batch['label'].shape}")
-print(f"Label range — pitch: [{sample_batch['label'][:,0].min():.2f}, {sample_batch['label'][:,0].max():.2f}]  "
-      f"yaw: [{sample_batch['label'][:,1].min():.2f}, {sample_batch['label'][:,1].max():.2f}]")
+sample_imgs, sample_labels = next(iter(train_loader))
+print(f"Image shape:  {sample_imgs.shape}")
+print(f"Label shape:  {sample_labels.shape}")
+print(f"Label range — pitch: [{sample_labels[:,0].min():.2f}, {sample_labels[:,0].max():.2f}]  "
+      f"yaw: [{sample_labels[:,1].min():.2f}, {sample_labels[:,1].max():.2f}]")
 
 dummy = torch.randn(8, 3, 224, 224).to(DEVICE)
 assert model.extract_features(dummy).shape == (8, FEAT_DIM), "extract_features() shape mismatch!"

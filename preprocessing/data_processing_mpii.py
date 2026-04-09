@@ -18,7 +18,7 @@ def ImageProcessing_MPII():
         sample_list = os.path.join(sample_root, person) 
 
         person = person.split(".")[0]
-        im_root = os.path.join(root, "Origin", "Data", "Original", person)
+        im_root = os.path.join(root, "Data", "Original", person)
 
         im_outpath = os.path.join(out_root, "Image", person)
         label_outpath = os.path.join(out_root, "Label", f"{person}.label")

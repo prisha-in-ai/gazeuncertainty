@@ -1,0 +1,27 @@
+# Core deep learning
+torch>=2.1.0
+torchvision>=0.16.0
+
+# Transformer backbone (ViT + hybrid models)
+timm>=0.9.12
+
+# Numerical & scientific
+numpy>=1.24.0
+scipy>=1.11.0
+
+# Image loading & augmentation
+Pillow>=10.0.0
+opencv-python>=4.8.0
+
+# Experiment tracking
+tensorboard>=2.14.0
+
+# Config management
+PyYAML>=6.0
+
+# Notebook & plotting
+jupyter>=1.0.0
+matplotlib>=3.7.0
+
+# Progress bars
+tqdm>=4.66.0
